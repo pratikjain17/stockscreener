@@ -2,11 +2,16 @@ package com.pratik.stockscreener.service.utility;
 
 import io.jsonwebtoken.*;
 import com.pratik.stockscreener.model.User;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 
 @Slf4j
@@ -19,24 +24,31 @@ public class JwtUtility {
     @Value("${jwt.expiration}")
     private int jwtExpirationMs;
 
-    public String generateJwtToken(Authentication authentication) {
-        User userPrincipal = (User) authentication.getPrincipal();
+    public String generateJwtToken(UserDetails userDetails) {
+        String userName = userDetails.getUsername();
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .subject(userName)
+                .issuedAt(new Date())
+                .expiration(new Date(new Date().getTime() + jwtExpirationMs))
+                .signWith(key())
                 .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).build().parseSignedClaims(token).getBody().getSubject();
+        return Jwts.parser().verifyWith((SecretKey) key()).build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+    private Key key(){
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).build().parseSignedClaims(authToken);
+            Jwts.parser().verifyWith((SecretKey) key()).build().parseSignedClaims(authToken);
             return true;
         } catch (MalformedJwtException | ExpiredJwtException | UnsupportedJwtException |
                  IllegalArgumentException e) {

@@ -3,12 +3,9 @@ package com.pratik.stockscreener.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
-@ToString
+@Entity
+@Table(name = "`user`")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,4 +15,11 @@ public class User {
     private String username;
 
     private String password;
+
+    public User(){}
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }
