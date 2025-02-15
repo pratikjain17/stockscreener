@@ -3,7 +3,6 @@ package com.pratik.stockscreener.service.impl;
 import com.pratik.stockscreener.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
