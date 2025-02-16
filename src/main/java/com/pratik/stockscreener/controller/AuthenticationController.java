@@ -1,4 +1,4 @@
-package com.pratik.stockscreener.controlller;
+package com.pratik.stockscreener.controller;
 
 import com.pratik.stockscreener.dto.JwtResponse;
 import com.pratik.stockscreener.dto.LoginRequest;

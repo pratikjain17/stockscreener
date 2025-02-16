@@ -1,4 +1,4 @@
-package com.pratik.stockscreener.controlller;
+package com.pratik.stockscreener.controller;
 
 import com.pratik.stockscreener.model.Stock;
 import com.pratik.stockscreener.service.StockService;
