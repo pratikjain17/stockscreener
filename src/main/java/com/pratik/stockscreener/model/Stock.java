@@ -6,13 +6,10 @@ import lombok.Data;
 public class Stock {
     private String symbol;
     private String name;
-    private String exchange;
-
-    public Stock(String symbol, String name, String exchange) {
-        this.symbol = symbol;
-        this.name = name;
-        this.exchange = exchange;
-    }
-
-    // Getters and Setters
+    private double price;
+    private double marketCap;
+    private double debtToEquity;
+    private double roce;      // Return on Capital Employed
+    private double roe;       // Return on Equity
+    private double peRatio;
 }

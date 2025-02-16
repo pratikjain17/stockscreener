@@ -45,4 +45,23 @@ public class StockController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching stock data: " + e.getMessage());
         }
     }
+
+    @GetMapping("/screen")
+    public ResponseEntity<List<Stock>> screenStocks(
+            @RequestParam(required = false) Double maxDebtToEquity,
+            @RequestParam(required = false) Double minROCE,
+            @RequestParam(required = false) Double minROE,
+            @RequestParam(required = false) Double minMarketCap,
+            @RequestParam(required = false) Double maxPERatio
+    ) {
+        List<Stock> stockList = stockService.screenStocks(
+                maxDebtToEquity,
+                minROCE,
+                minROE,
+                minMarketCap,
+                maxPERatio
+        );
+
+        return ResponseEntity.ok(stockList);
+    }
 }
